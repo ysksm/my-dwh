@@ -1,0 +1,24 @@
+<div class="container">
+  <header>
+    <h1>{{ title }}</h1>
+    <p>Angular + Tauri + DuckDB + Parquet</p>
+  </header>
+
+  <nav class="tabs">
+    <button
+      [class.active]="activeTab === 'tables'"
+      (click)="setActiveTab('tables')">
+      テーブル表示
+    </button>
+    <button
+      [class.active]="activeTab === 'dashboard'"
+      (click)="setActiveTab('dashboard')">
+      ダッシュボード
+    </button>
+  </nav>
+
+  <main>
+    <app-table-viewer *ngIf="activeTab === 'tables'"></app-table-viewer>
+    <app-dashboard *ngIf="activeTab === 'dashboard'"></app-dashboard>
+  </main>
+</div>
