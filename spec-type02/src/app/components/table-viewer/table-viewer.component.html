@@ -1,0 +1,35 @@
+<div class="table-viewer">
+  <div class="query-section">
+    <h2>SQL クエリ実行</h2>
+    <textarea
+      [(ngModel)]="query"
+      placeholder="SELECT * FROM table_name"
+      rows="5">
+    </textarea>
+    <button (click)="executeQuery()" [disabled]="loading">
+      {{ loading ? '実行中...' : 'クエリを実行' }}
+    </button>
+  </div>
+
+  <div class="error" *ngIf="error">
+    <strong>エラー:</strong> {{ error }}
+  </div>
+
+  <div class="results" *ngIf="tableData">
+    <h3>結果 ({{ tableData.rows.length }} 行)</h3>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th *ngFor="let col of tableData.columns">{{ col }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of tableData.rows">
+            <td *ngFor="let cell of row">{{ cell }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
