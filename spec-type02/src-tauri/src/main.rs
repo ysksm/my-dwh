@@ -61,11 +61,23 @@ fn execute_query(state: State<AppState>, query: String) -> Result<TableData, Str
 fn get_dashboard_stats(state: State<AppState>) -> Result<DashboardStats, String> {
     let conn = state.db.lock().map_err(|e| e.to_string())?;
     
-    // Sample statistics - in real app, query from actual data
+    // Query actual statistics from the database
+    let total_records: u64 = conn
+        .query_row("SELECT COUNT(*) FROM sample_table", [], |row| row.get(0))
+        .map_err(|e| e.to_string())?;
+    
+    let unique_values: u64 = conn
+        .query_row("SELECT COUNT(DISTINCT category) FROM sample_table", [], |row| row.get(0))
+        .map_err(|e| e.to_string())?;
+    
+    let avg_value: f64 = conn
+        .query_row("SELECT AVG(value) FROM sample_table", [], |row| row.get(0))
+        .map_err(|e| e.to_string())?;
+    
     Ok(DashboardStats {
-        total_records: 1000,
-        unique_values: 250,
-        avg_value: 42.5,
+        total_records,
+        unique_values,
+        avg_value,
     })
 }
 
